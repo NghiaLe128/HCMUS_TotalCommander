@@ -1,0 +1,83 @@
+﻿<Window x:Class="TotalCommander.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TotalCommander"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <ToolBar Grid.Row="0">
+            <Separator/>
+            <Button>Back</Button>
+            <Button>Forward</Button>
+            <Button>Up</Button>
+            <Separator/>
+            <Button>Copy</Button>
+            <Button>Move</Button>
+            <Button>Delete</Button>
+            <Separator/>
+        </ToolBar>
+
+        <DockPanel Grid.Row="2" LastChildFill="True">
+            <StackPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Margin="5">
+                <!-- Label and ComboBox on the same row -->
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox x:Name="driveComboBox" Height="20" Width="100" SelectionChanged="DriveComboBox_SelectionChanged">
+                        <ComboBoxItem>Select Drive</ComboBoxItem>
+                    </ComboBox>
+
+                    <Label x:Name="currentDirectoryLabel" Content="Current Directory: " Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Grid Grid.Row="1"
+          Grid.Column="0"
+          Grid.ColumnSpan="2">
+                <ListView x:Name="fileListView">
+                    <ListView.View>
+                        <GridView x:Name="gridView1">
+                            <GridViewColumn DisplayMemberBinding="{Binding FileName}" Header="Name" Width="{Binding ElementName=name, Path=ActualWidth}"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding FileType}" Header="Type" Width="{Binding ElementName=type, Path=ActualWidth}"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding FileSize}" Header="Size" Width="{Binding ElementName=size, Path=ActualWidth}"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding FileDate}" Header="Date" Width="{Binding ElementName=created, Path=ActualWidth}"/>
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="MouseDoubleClick" Handler="FileListView_MouseDoubleClick" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+                <Grid Visibility="Hidden">
+                    <Grid.ColumnDefinitions>
+                        <!--Width is bound to width of the first GridViewColumn -->
+                        <!--Width is set to "Fill"-->
+                        <ColumnDefinition Width="2*"/>
+                        <!--Correction Width-->
+                        <ColumnDefinition Width="*"/>
+
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <!--Correction Width-->
+
+                    </Grid.ColumnDefinitions>
+
+                    <!--This is the hidden helper Field which is used to bind to, using the "Fill" column of the helper grid-->
+                    <Grid Grid.Column="0" x:Name="name"/>
+                    <Grid Grid.Column="1" x:Name="type"/>
+                    <Grid Grid.Column="2" x:Name="size"/>
+                    <Grid Grid.Column="3" x:Name="created"/>
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>
